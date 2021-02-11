@@ -16,6 +16,7 @@ build:
     - rm /etc/apt/sources.list.d/basho_riak.list
     # 
     - java -version
+    - gradle -v
     - mvn --no-snapshot-updates --quiet clean install -Dmaven.javadoc.skip=true
     # ensure all modifications created by 'mature' generators are in the git repo
     # below move to CircleCI ./bin/utils/ensure-up-to-date
