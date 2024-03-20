@@ -1,12 +1,11 @@
 package org.openapitools.codegen.java.jaxrs;
 
+import com.google.common.collect.ImmutableMap;
 import io.swagger.parser.OpenAPIParser;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.parser.core.models.ParseOptions;
-import org.assertj.core.condition.AllOf;
 import org.openapitools.codegen.*;
 import org.openapitools.codegen.config.CodegenConfigurator;
 import org.openapitools.codegen.java.assertions.JavaFileAssert;
@@ -34,8 +33,6 @@ import static org.openapitools.codegen.languages.AbstractJavaJAXRSServerCodegen.
 import static org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen.*;
 import static org.openapitools.codegen.languages.features.GzipFeatures.USE_GZIP_FEATURE;
 import static org.testng.Assert.assertTrue;
-
-import com.google.common.collect.ImmutableMap;
 
 /**
  * Unit-Test for {@link org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen}.
@@ -226,6 +223,20 @@ public class JavaJAXRSSpecServerCodegenTest extends JavaJaxrsBaseTest {
     public void testToApiNameForSubresource() {
         final String subresource = codegen.toApiName("subresource");
         Assert.assertEquals(subresource, "SubresourceApi");
+    }
+
+    @Test
+    public void testGenerateEmailBeanValidation() throws IOException {
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(USE_BEANVALIDATION, true);
+        properties.put(USE_JAKARTA_EE, true);
+
+        File output = Files.createTempDirectory("test").toFile();
+        final CodegenConfigurator configurator = new CodegenConfigurator()
+                .setGeneratorName("jaxrs-spec")
+                .setAdditionalProperties(properties)
+                .setInputSpec("src/test/resources/3_0/api-email.yaml")
+                .setOutputDir(output.getAbsolutePath().replace("\\", "/"));
     }
 
     @Test
